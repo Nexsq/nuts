@@ -13,3 +13,5 @@ impl Board {
         level += 1;
     }
 }
+
+funny red snake lines are under this text lol
