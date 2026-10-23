@@ -2,15 +2,15 @@ use super::cell::Cell;
 
 #[derive(Debug)]
 pub struct Matrix {
-    row: Vec<Cell>,
-    col: Vec<Cell>,
+    pub row: Vec<Cell>,
+    pub col: Vec<Cell>,
 }
 
 impl Matrix {
-    pub fn new() -> Matrix {
+    pub fn new(w: u8, h: u8) -> Matrix {
         Matrix {
-            row: Vec::new(),
-            col: Vec::new(),
+            row: vec![Cell::new(); w as usize],
+            col: vec![],
         }
     }
 }

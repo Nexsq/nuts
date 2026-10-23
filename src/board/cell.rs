@@ -1,12 +1,10 @@
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct Cell {
-    lit: bool
+    lit: bool,
 }
 
 impl Cell {
     pub fn new() -> Cell {
-        Cell {
-            lit: false,
-        }
+        Cell { lit: false }
     }
 }

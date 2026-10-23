@@ -1,5 +1,7 @@
+mod cell;
 mod grid;
 mod matrix;
-mod cell;
 
 pub use grid::Grid;
+
+pub use cell::Cell; // temp
