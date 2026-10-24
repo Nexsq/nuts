@@ -1,7 +1,6 @@
 mod cell;
 mod grid;
-mod matrix;
+mod tetros;
 
 pub use grid::Grid;
-
-pub use cell::Cell; // temp
+pub use tetros::Tetro;

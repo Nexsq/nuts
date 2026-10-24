@@ -1,8 +1,8 @@
 mod board;
+use board::{Grid, Tetro};
 
 fn main() {
-    let mut x = board::Grid::new(10, 20);
-    println!("{:?}", x);
-    x.matrix.row.push(board::Cell::new());
-    x.print();
+    let mut grid = Grid::new(10, 20);
+    grid.spawn(Tetro::I);
+    grid.print();
 }
