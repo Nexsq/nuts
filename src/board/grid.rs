@@ -1,6 +1,6 @@
 use super::cell::Cell;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Grid {
     matrix: Vec<Vec<Cell>>,
     width: u8,
@@ -19,23 +19,39 @@ impl Grid {
         }
     }
 
-    pub fn spawn(&mut self, piece: super::tetros::Tetro) {
+    pub fn spawn(&mut self, piece: super::tetros::Tetro) -> bool {
         match piece {
-            super::tetros::Tetro::None => {}
+            super::tetros::Tetro::None => { return false }
             _ => {
-                let mid = self.width / 2;
+                let mut copy = self.clone();
+                let mid = copy.width / 2;
                 let shape = piece.shape();
                 for (i, row) in shape.iter().enumerate() {
                     for (j, &cell) in row.iter().enumerate() {
                         if cell {
                             let x = i;
-                            let y = mid + j as u8 - (shape[0].len() as f32 / 2.0).ceil() as u8;
-                            self.matrix[x][y as usize].set_piece(piece.clone());
+                            let y = mid as usize + j - (shape[0].len() as f32 / 2.0).ceil() as usize;
+                            if copy.matrix[x][y].is_used() {
+                                return false
+                            } else {
+                                copy.matrix[x][y].set_piece(piece.clone());
+                            }
                         }
                     }
                 }
+                *self = copy;
+                return true
             }
         }
+    }
+
+    pub fn shift(&self, dir: super::dirs::Dir) -> bool {
+        // match dir typeshi
+        let mut copy = self.clone();
+        for i in self.matrix.iter() {
+            println!("{:?}", i)
+        }
+        return true
     }
 
     pub fn print(&self) {
