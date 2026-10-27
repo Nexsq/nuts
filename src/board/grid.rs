@@ -103,6 +103,19 @@ impl Grid {
         }
     }
 
+    pub fn clear(&mut self) -> u8 {
+        // todo: this
+        for i in self.matrix.iter_mut() {
+            let mut full = true;
+            for j in i.iter_mut() {
+                if j.used() && j.locked() {
+                    full = false
+                }
+            }
+        }
+        0
+    }
+
     pub fn print(&self) {
         for row in self.matrix.iter() {
             for cell in row.iter() {
