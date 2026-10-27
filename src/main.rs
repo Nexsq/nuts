@@ -1,5 +1,5 @@
 mod board;
-use board::{Grid, Tetro, Dir};
+use board::{Dir, Grid, Tetro};
 
 fn main() {
     let mut grid = Grid::new(10, 20);
@@ -8,4 +8,26 @@ fn main() {
     }
     println!("---------");
     grid.shift(Dir::Down);
+    grid.shift(Dir::Down);
+    grid.shift(Dir::Down);
+    grid.shift(Dir::Down);
+    grid.shift(Dir::Down);
+    grid.shift(Dir::Down);
+    grid.print();
+    grid.lock();
+    grid.spawn(Tetro::O);
+    println!("---------");
+    grid.shift(Dir::Right);
+    grid.shift(Dir::Right);
+    grid.shift(Dir::Right);
+    grid.shift(Dir::Right);
+    grid.shift(Dir::Right);
+    grid.print();
+    grid.lock();
+    grid.spawn(Tetro::O);
+    println!("---------");
+    grid.shift(Dir::Right);
+    grid.shift(Dir::Right);
+    grid.shift(Dir::Right);
+    grid.print();
 }

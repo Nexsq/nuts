@@ -19,47 +19,107 @@ impl Grid {
         }
     }
 
+    pub fn copy(&self) -> Grid {
+        let mut out = self.clone();
+        for (i, row) in self.matrix.iter().enumerate() {
+            for (j, cell) in row.iter().enumerate() {
+                if cell.used() && !cell.locked() {
+                    out.matrix[i][j].clear();
+                }
+            }
+        }
+        out
+    }
+
     pub fn spawn(&mut self, piece: super::tetros::Tetro) -> bool {
         match piece {
-            super::tetros::Tetro::None => { return false }
+            super::tetros::Tetro::None => false,
             _ => {
-                let mut copy = self.clone();
-                let mid = copy.width / 2;
+                let mut temp = self.clone();
+                let mid = temp.width / 2;
                 let shape = piece.shape();
                 for (i, row) in shape.iter().enumerate() {
                     for (j, &cell) in row.iter().enumerate() {
                         if cell {
                             let x = i;
-                            let y = mid as usize + j - (shape[0].len() as f32 / 2.0).ceil() as usize;
-                            if copy.matrix[x][y].is_used() {
-                                return false
+                            let y =
+                                mid as usize + j - (shape[0].len() as f32 / 2.0).ceil() as usize;
+                            if temp.matrix[x][y].used() {
+                                return false;
                             } else {
-                                copy.matrix[x][y].set_piece(piece.clone());
+                                temp.matrix[x][y].set_piece(piece.clone());
                             }
                         }
                     }
                 }
-                *self = copy;
-                return true
+                *self = temp;
+                true
             }
         }
     }
 
-    pub fn shift(&self, dir: super::dirs::Dir) -> bool {
-        // match dir typeshi
-        let mut copy = self.clone();
-        for i in self.matrix.iter() {
-            println!("{:?}", i)
+    pub fn shift(&mut self, dir: super::dirs::Dir) -> bool {
+        let mut temp = self.copy();
+        for (i, row) in self.matrix.iter().enumerate() {
+            for (j, cell) in row.iter().enumerate() {
+                if cell.used() && !cell.locked() {
+                    match dir {
+                        super::dirs::Dir::Down => {
+                            if i + 1 < temp.height as usize && !temp.matrix[i + 1][j].locked() {
+                                temp.matrix[i + 1][j] = self.matrix[i][j].clone();
+                            } else {
+                                return false;
+                            }
+                        }
+                        super::dirs::Dir::Left => {
+                            if j > 0 && !temp.matrix[i][j - 1].locked() {
+                                temp.matrix[i][j - 1] = self.matrix[i][j].clone();
+                            } else {
+                                return false;
+                            }
+                        }
+                        super::dirs::Dir::Right => {
+                            if j + 1 < temp.width as usize && !temp.matrix[i][j + 1].locked() {
+                                temp.matrix[i][j + 1] = self.matrix[i][j].clone();
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
         }
-        return true
+        *self = temp;
+        true
+    }
+
+    pub fn lock(&mut self) {
+        for i in self.matrix.iter_mut() {
+            for j in i.iter_mut() {
+                if j.used() && !j.locked() {
+                    j.lock();
+                }
+            }
+        }
     }
 
     pub fn print(&self) {
         for row in self.matrix.iter() {
             for cell in row.iter() {
-                print!("{}", if cell.is_used() { "[]" } else { ". " });
+                print!(
+                    "{}",
+                    if cell.used() {
+                        if cell.locked() {
+                            "\x1b[;m[]"
+                        } else {
+                            "\x1b[;31m[]"
+                        }
+                    } else {
+                        "\x1b[;m. "
+                    }
+                );
             }
-            println!();
+            print!("\r\n");
         }
     }
 }

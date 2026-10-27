@@ -1,8 +1,8 @@
 mod cell;
+mod dirs;
 mod grid;
 mod tetros;
-mod dirs;
 
+pub use dirs::Dir;
 pub use grid::Grid;
 pub use tetros::Tetro;
-pub use dirs::Dir;

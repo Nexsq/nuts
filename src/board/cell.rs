@@ -8,21 +8,26 @@ pub struct Cell {
 
 impl Cell {
     pub fn new() -> Cell {
-        Cell { piece: Tetro::None, locked: true }
+        Cell {
+            piece: Tetro::None,
+            locked: false,
+        }
     }
 
-    pub fn is_used(&self) -> bool {
+    pub fn clear(&mut self) {
+        self.piece = Tetro::None;
+        self.locked = false;
+    }
+
+    pub fn used(&self) -> bool {
         match self.piece {
             Tetro::None => false,
             _ => true,
         }
     }
 
-    pub fn is_locked(&self) -> bool {
-        match self.piece {
-            Tetro::None => panic!("This cell is empty!"),
-            _ => self.locked,
-        }
+    pub fn locked(&self) -> bool {
+        self.locked
     }
 
     pub fn lock(&mut self) {
