@@ -8,18 +8,18 @@ pub struct Grid {
 }
 
 impl Grid {
-    pub fn new(w: u8, h: u8) -> Grid {
+    pub fn new(w: u8, h: u8) -> Self {
         if w < 4 || h < 4 {
             panic!("Board too small!")
         }
-        Grid {
+        Self {
             matrix: vec![vec![Cell::new(); w as usize]; h as usize],
             width: w,
             height: h,
         }
     }
 
-    pub fn copy(&self) -> Grid {
+    pub fn copy(&self) -> Self {
         let mut out = self.clone();
         for (i, row) in self.matrix.iter().enumerate() {
             for (j, cell) in row.iter().enumerate() {
