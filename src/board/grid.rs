@@ -104,16 +104,16 @@ impl Grid {
     }
 
     pub fn clear(&mut self) -> u8 {
-        // todo: this
-        for i in self.matrix.iter_mut() {
-            let mut full = true;
-            for j in i.iter_mut() {
-                if j.used() && j.locked() {
-                    full = false
-                }
+        let mut cleared = 0;
+        for i in 0..self.height as usize {
+            if self.matrix[i].iter().all(|c| c.locked()) {
+                self.matrix.remove(i);
+                self.matrix
+                    .insert(0, vec![Cell::new(); self.width as usize]);
+                cleared += 1;
             }
         }
-        0
+        cleared
     }
 
     pub fn print(&self) {
